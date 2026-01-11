@@ -1,0 +1,16 @@
+{
+    "accountAssociation": {
+        "header": "eyJmaWQiOjk5OTk5OSwidHlwZSI6ImN1c3RvZHkiLCJrZXkiOiIweDAwMCJ9",
+        "payload": "eyJkb21haW4iOiJiaW90YS1wcm90b2NvbC52ZXJjZWwuYXBwIn0",
+        "signature": "MHhiYmI"
+    },
+    "frame": {
+        "version": "1.0.0",
+        "name": "Biota Protocol",
+        "iconUrl": "https://biota-protocol.vercel.app/icon.png",
+        "homeUrl": "https://biota-protocol.vercel.app",
+        "imageUrl": "https://biota-protocol.vercel.app/splash.png",
+        "buttonText": "Entrar al Nodo",
+        "webhookUrl": "https://biota-protocol.vercel.app/api/webhook"
+    }
+}
