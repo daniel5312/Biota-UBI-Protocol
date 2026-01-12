@@ -1,126 +1,171 @@
 "use client";
 
 import { usePrivy } from "@privy-io/react-auth";
-import { useRouter } from "next/navigation";
-import { useEffect } from "react";
-import Link from "next/link";
-import { useReadContract } from "thirdweb/react"; // Importamos el lector
-import { contract } from "@/lib/thirdweb";
+import {
+  Sprout,
+  Database,
+  LineChart,
+  ClipboardCheck,
+  MessageSquare,
+  Microscope,
+  Globe,
+  Zap,
+  Heart,
+} from "lucide-react";
 import { Navbar } from "@/components/navbar";
+import { RegistroProductor } from "@/components/forms/registroProductor";
 
-export default function Dashboard() {
-  const { ready, authenticated, user, logout } = usePrivy();
-  const router = useRouter();
+export default function ProducerDashboard() {
+  const { ready } = usePrivy();
 
-  // Protección de ruta
-  useEffect(() => {
-    if (ready && !authenticated) {
-      router.push("/");
-    }
-  }, [ready, authenticated, router]);
-
-  // LEER DATOS DE LA BLOCKCHAIN
-  // 1. Consultamos el balance (Cuántos pasaportes tiene el usuario)
-  const { data: balance, isLoading } = useReadContract({
-    contract,
-    method: "function balanceOf(address owner) view returns (uint256)",
-    params: [
-      (user?.wallet?.address ||
-        "0x0000000000000000000000000000000000000000") as `0x${string}`,
-    ],
-  });
-
-  if (!ready || !authenticated) return null;
-
-  const formatAddress = (addr: string) =>
-    `${addr.substring(0, 6)}...${addr.substring(addr.length - 4)}`;
+  if (!ready) return <div className="min-h-screen bg-[#050505]" />;
 
   return (
-    <div className="min-h-screen bg-gray-50 pb-20">
+    <div className="min-h-screen bg-[#050505] text-white selection:bg-emerald-500/30 antialiased">
       <Navbar />
-      <nav className="bg-white border-b border-gray-200 px-6 py-4 flex justify-between items-center sticky top-0 z-10">
-        <div className="flex items-center gap-2">
-          <span className="text-2xl">🌿</span>
-          <span className="font-bold text-gray-800">Biota</span>
-        </div>
-        <button
-          onClick={logout}
-          className="text-sm text-red-500 hover:text-red-700 font-medium bg-red-50 px-3 py-1 rounded-lg transition-colors"
-        >
-          Salir
-        </button>
-      </nav>
 
-      <main className="max-w-2xl mx-auto p-6 space-y-6">
-        {/* Tarjeta de Identidad */}
-        <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-          <h2 className="text-gray-500 text-sm font-medium mb-1">
-            Identidad Conectada
-          </h2>
-          <div className="flex items-center gap-3">
-            <div className="h-10 w-10 bg-gradient-to-br from-green-400 to-emerald-600 rounded-full"></div>
-            <div>
-              <p className="font-mono text-lg font-bold text-gray-800">
-                {user?.wallet
-                  ? formatAddress(user.wallet.address)
-                  : "Cargando..."}
-              </p>
-              <div className="flex items-center gap-2">
-                <span className="h-2 w-2 bg-green-500 rounded-full animate-pulse"></span>
-                <p className="text-xs text-green-600 font-medium">
-                  Celo Sepolia Activo
-                </p>
+      <main className="max-w-6xl mx-auto px-6 pt-32 pb-20 space-y-24">
+        <header className="border-b border-white/5 pb-10">
+          <h1 className="text-5xl font-black italic uppercase tracking-tighter">
+            Portal del Productor
+          </h1>
+          <p className="text-emerald-500 font-bold text-xs uppercase tracking-[0.3em] mt-2">
+            Protocolo ReFi • Nodo Génesis Envigado
+          </p>
+        </header>
+
+        <section className="grid md:grid-cols-2 gap-12 bg-white/5 p-10 rounded-[40px] border border-white/10 relative overflow-hidden">
+          <div className="absolute top-0 right-0 p-8 opacity-10">
+            <Zap size={120} />
+          </div>
+          <div className="space-y-6 relative z-10">
+            <h2 className="text-3xl font-black italic uppercase">
+              Acompañamiento en tu Transición
+            </h2>
+            <p className="text-stone-400 text-sm leading-relaxed">
+              La agricultura regenerativa no es solo cambiar insumos, es sanar
+              el ecosistema. Biota te acompaña con técnicos en campo para
+              restaurar la <b>microbiología del suelo</b>. Sabemos que este
+              proceso toma tiempo, por eso, mientras la tierra sana, recibes tu{" "}
+              <b>UBI (Renta Básica)</b> directamente en tu TuCOP Wallet.
+            </p>
+            <div className="flex gap-4">
+              <div className="bg-emerald-600 px-4 py-2 rounded-lg text-[10px] font-black uppercase">
+                Asistencia Técnica
+              </div>
+              <div className="bg-blue-600 px-4 py-2 rounded-lg text-[10px] font-black uppercase">
+                Garantía UBI
               </div>
             </div>
           </div>
-        </div>
-
-        {/* CONTADOR DE PASAPORTES (Lectura Blockchain) */}
-        <div className="grid grid-cols-2 gap-4">
-          <div className="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm">
-            <p className="text-gray-500 text-sm">Mis Lotes</p>
-            <p className="text-4xl font-bold text-green-600">
-              {isLoading ? "..." : balance?.toString() || "0"}
+          <div className="bg-black/40 p-8 rounded-3xl border border-white/5 space-y-4">
+            <h4 className="text-xs font-black uppercase text-emerald-500">
+              ¿Por qué Regenerar?
+            </h4>
+            <p className="text-[11px] text-stone-500 leading-relaxed italic">
+              &ldquo;Buscamos que el productor deje de ser un extractor y se
+              convierta en un guardián de la vida. El UBI financia tu
+              tranquilidad mientras la naturaleza recupera su capacidad
+              productiva.&rdquo;
             </p>
           </div>
+        </section>
 
-          {/* Botón de Acción */}
-          <Link href="/mint" className="block">
-            <div className="h-full bg-green-600 p-6 rounded-2xl border border-green-600 shadow-lg shadow-green-100 flex flex-col justify-center items-center text-white hover:bg-green-700 transition-all active:scale-95 cursor-pointer">
-              <span className="text-2xl mb-1">+</span>
-              <span className="font-bold">Nuevo</span>
-            </div>
-          </Link>
-        </div>
-
-        {/* Lista Visual (Placeholder condicional) */}
-        <div>
-          <h3 className="text-lg font-bold text-gray-800 mb-3">Inventario</h3>
-          {balance && balance > BigInt(0) ? (
-            <div className="bg-white p-6 rounded-2xl border border-green-200 bg-green-50/30">
-              <div className="flex items-center gap-4">
-                <span className="text-4xl">📜</span>
-                <div>
-                  <h4 className="font-bold text-gray-800">
-                    Pasaporte Digital #{balance.toString()}
-                  </h4>
-                  <p className="text-sm text-gray-600">
-                    Estado: Verificado en Blockchain
-                  </p>
-                  <p className="text-xs text-green-600 mt-1">
-                    Regeneración Activa
-                  </p>
-                </div>
+        <section className="space-y-10">
+          <div className="max-w-3xl">
+            <h2 className="text-3xl font-black italic uppercase mb-4 flex items-center gap-3">
+              <Microscope className="text-blue-500" /> Datos que Generan Valor
+            </h2>
+            <p className="text-stone-400 text-sm leading-relaxed">
+              Mientras regeneras, recopilamos evidencia física para garantizar
+              datos en tiempo real. Esta información se tokeniza para vender{" "}
+              <b>Bonos Verdes</b> a sponsors globales que financian el
+              protocolo.
+            </p>
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            {[
+              { t: "Carbono", d: "Captura de CO2 (Ton)", icon: <Globe /> },
+              {
+                t: "Microbiología",
+                d: "Salud fúngica y bacteriana",
+                icon: <Sprout />,
+              },
+              {
+                t: "Biodiversidad",
+                d: "Conteo de especies locales",
+                icon: <Heart />,
+              },
+              {
+                t: "Suelo",
+                d: "cm de suelo recuperado/año",
+                icon: <Database />,
+              },
+              {
+                t: "Alimentario",
+                d: "Calidad nutricional real",
+                icon: <Zap />,
+              },
+              { t: "Ecosistema", d: "Retención hídrica", icon: <LineChart /> },
+            ].map((item, i) => (
+              <div
+                key={i}
+                className="bg-[#0a0a0a] border border-white/5 p-6 rounded-[32px] hover:border-emerald-500/40 transition-all"
+              >
+                <div className="text-emerald-500 mb-4">{item.icon}</div>
+                <p className="text-sm font-black uppercase italic">{item.t}</p>
+                <p className="text-[9px] text-stone-500 uppercase mt-1 leading-tight">
+                  {item.d}
+                </p>
               </div>
+            ))}
+          </div>
+        </section>
+
+        <section id="registro" className="space-y-12">
+          <div className="text-center space-y-4">
+            <h2 className="text-4xl font-black italic uppercase">
+              Inscribe tu Predio
+            </h2>
+            <p className="text-stone-500 text-sm max-w-xl mx-auto italic">
+              Al finalizar este registro y pasar el diagnóstico inicial,
+              crearemos tu <b>Identidad Self</b> y tu certificado Biota
+              verificado en Celo.
+            </p>
+          </div>
+          <RegistroProductor />
+        </section>
+
+        <section className="grid md:grid-cols-3 gap-8">
+          <div className="md:col-span-2 bg-gradient-to-r from-blue-900/20 to-emerald-900/20 p-10 rounded-[40px] border border-white/5">
+            <h3 className="text-xl font-black italic uppercase mb-4">
+              Comunícate con Biota
+            </h3>
+            <p className="text-stone-400 text-xs mb-6">
+              Agenda una visita técnica o inscríbete en nuestros talleres y
+              workshops de concientización.
+            </p>
+            <div className="flex flex-wrap gap-4">
+              <button className="flex items-center gap-2 bg-white text-black px-6 py-3 rounded-xl text-[10px] font-black uppercase">
+                <MessageSquare size={14} /> WhatsApp Soporte
+              </button>
+              <button className="flex items-center gap-2 bg-white/5 border border-white/10 px-6 py-3 rounded-xl text-[10px] font-black uppercase hover:bg-white/10">
+                <ClipboardCheck size={14} /> Agendar Taller
+              </button>
             </div>
-          ) : (
-            <div className="bg-white p-8 rounded-2xl border border-dashed border-gray-300 text-center">
-              <p className="text-gray-400">
-                No tienes pasaportes registrados aún.
-              </p>
-            </div>
-          )}
-        </div>
+          </div>
+          <div className="bg-[#0a0a0a] border border-white/5 p-8 rounded-[40px] flex flex-col justify-center text-center">
+            <p className="text-[10px] font-black text-stone-600 uppercase tracking-widest mb-2">
+              Ubicación Nodo
+            </p>
+            <p className="text-sm font-bold italic">
+              Génesis Envigado, Antioquia
+            </p>
+            <p className="text-[9px] text-stone-500 mt-4 uppercase">
+              Laboratorio de Transición ReFi
+            </p>
+          </div>
+        </section>
       </main>
     </div>
   );

@@ -3,16 +3,17 @@
 import { usePrivy } from "@privy-io/react-auth";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-//import Link from "next/link";
 import {
   Leaf,
   MoveRight,
-  Sprout,
-  ArrowUpRight,
-  Coins,
   ShieldCheck,
-  Loader2,
-  // Eliminamos Landmark de aquí
+  Zap,
+  Heart,
+  Microscope,
+  Wallet,
+  Share2,
+  Database,
+  LayoutGrid,
 } from "lucide-react";
 
 export default function LandingPage() {
@@ -20,144 +21,331 @@ export default function LandingPage() {
   const router = useRouter();
   const [mounted, setMounted] = useState(false);
 
-  // Evita errores de hidratación
   useEffect(() => {
     setMounted(true);
   }, []);
 
-  // Redirección automática si ya está logueado
-  useEffect(() => {
-    if (ready && authenticated) {
-      router.push("/dashboard");
-    }
-  }, [ready, authenticated, router]);
+  if (!mounted) return <div className="min-h-screen bg-[#F9FAFB]" />;
 
-  if (!mounted) return <div className="min-h-screen bg-[#FAFAF9]" />;
+  const handleCTA = (path: string) => {
+    if (authenticated) {
+      router.push(path);
+    } else {
+      login();
+    }
+  };
 
   return (
-    <div className="min-h-screen bg-[#FAFAF9] text-stone-900 font-sans selection:bg-emerald-100">
-      {/* --- NAVBAR --- */}
-      <nav className="fixed top-0 w-full z-[100] bg-white/70 backdrop-blur-md border-b border-stone-100">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-20">
-            {/* LOGO */}
-            <div className="flex items-center gap-2 group cursor-pointer">
-              <div className="w-10 h-10 bg-emerald-600 rounded-xl flex items-center justify-center text-white shadow-lg shadow-emerald-200 group-hover:rotate-12 transition-transform duration-300">
-                <Leaf size={24} />
-              </div>
-              <span className="text-2xl font-black tracking-tighter text-stone-900">
-                BIOTA<span className="text-emerald-500">.</span>
-              </span>
-            </div>
+    <div className="min-h-screen bg-[#030712] text-white font-sans selection:bg-emerald-500/30 antialiased overflow-x-hidden">
+      {/* DEGRADADO RADIAL GLOBAL DE FONDO */}
+      <div className="fixed inset-0 overflow-hidden -z-10">
+        <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-emerald-900/20 blur-[120px] rounded-full" />
+        <div className="absolute bottom-[10%] right-[-5%] w-[40%] h-[40%] bg-blue-900/20 blur-[120px] rounded-full" />
+      </div>
 
-            {/* BOTÓN DE LOGIN (Conectado a Privy) */}
-            <div>
-              {ready && !authenticated ? (
-                <button
-                  onClick={login}
-                  className="px-6 py-2.5 bg-stone-900 text-white rounded-xl font-bold hover:bg-emerald-600 transition-all shadow-lg shadow-stone-200 hover:shadow-emerald-200"
-                >
-                  Conectar Wallet
-                </button>
-              ) : (
-                <div className="flex items-center gap-2 text-emerald-600 font-bold">
-                  <Loader2 className="animate-spin" size={20} />
-                  <span>Cargando...</span>
-                </div>
-              )}
+      {/* NAVBAR ESTILO ASTAR DARK */}
+      <nav className="fixed top-0 w-full z-[100] bg-[#030712]/70 backdrop-blur-xl border-b border-white/5">
+        <div className="max-w-7xl mx-auto px-6 h-16 flex justify-between items-center">
+          <div
+            className="flex items-center gap-2 cursor-pointer"
+            onClick={() => window.scrollTo(0, 0)}
+          >
+            <div className="w-8 h-8 bg-gradient-to-tr from-emerald-500 to-blue-600 rounded-lg flex items-center justify-center text-white shadow-lg shadow-emerald-500/20">
+              <Leaf size={18} />
             </div>
+            <span className="text-xl font-black tracking-tighter uppercase italic text-white">
+              BIOTA<span className="text-emerald-500">.</span>
+            </span>
           </div>
+          <button
+            onClick={login}
+            className="text-[10px] font-black tracking-[0.2em] bg-white text-black px-6 py-2.5 rounded-full hover:bg-emerald-400 transition-all uppercase"
+          >
+            {ready && authenticated ? "Ir al Portal" : "Conectar"}
+          </button>
         </div>
       </nav>
 
-      {/* --- HERO SECTION --- */}
-      <section className="flex flex-col items-center justify-center pt-40 pb-20 px-6 text-center">
-        <div className="bg-emerald-100 text-emerald-700 px-4 py-1 rounded-full text-sm font-bold mb-6 animate-pulse">
-          💎 Proof of Regeneration: Celo Sepolia
+      <main className="max-w-7xl mx-auto px-6 pt-32 pb-20">
+        {/* HERO SECTION DARK */}
+        <section className="text-center mb-24 relative">
+          <h1 className="text-6xl md:text-8xl font-black tracking-tighter mb-8 leading-[0.9] text-transparent bg-clip-text bg-gradient-to-b from-white to-white/40">
+            SANA TU TIERRA. <br />{" "}
+            <span className="bg-gradient-to-r from-emerald-500 to-blue-400 bg-clip-text text-transparent italic">
+              COBRA POR REGENERAR.
+            </span>
+          </h1>
+          <p className="text-lg text-stone-400 mb-12 max-w-2xl mx-auto leading-relaxed font-medium">
+            El protocolo **ReFi** que transforma la agricultura tradicional en
+            activos digitales, **Bonos Verdes** y Renta Básica (**UBI**) en
+            Antioquia.
+          </p>
+          <div className="flex flex-col sm:flex-row justify-center gap-4">
+            <button
+              onClick={() => handleCTA("/dashboard")}
+              className="bg-emerald-500 text-black px-10 py-4 rounded-2xl font-black text-sm flex items-center justify-center gap-3 hover:shadow-xl hover:shadow-emerald-500/20 transition-all"
+            >
+              SOY PRODUCTOR <MoveRight size={18} />
+            </button>
+            <button
+              onClick={() => handleCTA("/marketplace")}
+              className="bg-white/5 border border-white/10 text-white px-10 py-4 rounded-2xl font-black text-sm hover:bg-white/10 transition-all shadow-sm"
+            >
+              SER SPONSOR
+            </button>
+          </div>
+        </section>
+        {/* GRID DE INFORMACIÓN (TUCop & CELO) */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+          {/* TuCOP Wallet */}
+          <div className="bg-[#0a0a0a] p-10 rounded-[40px] border border-white/10 shadow-2xl transition-shadow group relative overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-radial from-emerald-500/10 to-transparent opacity-50" />
+            <div className="w-12 h-12 bg-emerald-500/10 rounded-2xl flex items-center justify-center text-emerald-500 mb-6 group-hover:scale-110 transition-transform relative z-10">
+              <Wallet size={24} />
+            </div>
+            <h2 className="text-2xl font-black text-white mb-4 italic relative z-10">
+              TuCOP Wallet & DeFi
+            </h2>
+            <p className="text-stone-400 text-sm leading-relaxed mb-6 relative z-10">
+              Recibe tu UBI en <b>cCOP</b>. Billetera inteligente para el
+              productor: liquidez real, respaldada y verificada 100% on-chain
+              con protocolos <b>DeFi</b>.
+            </p>
+            <div className="bg-white/5 p-4 rounded-2xl font-mono text-[10px] text-emerald-500 border border-white/5 relative z-10">
+              0xBIOTA...CONNECTED_TO_CELO_SEPOLIA_11142220
+            </div>
+          </div>
+
+          {/* Celo Infrastructure */}
+          <div className="bg-gradient-to-br from-emerald-900 to-[#030712] p-10 rounded-[40px] text-white shadow-xl relative overflow-hidden border border-white/5 group">
+            <Database className="absolute bottom-[-20px] right-[-20px] w-64 h-64 text-emerald-500/5 group-hover:rotate-12 transition-transform duration-700" />
+            <div className="w-12 h-12 bg-white/5 rounded-2xl flex items-center justify-center mb-6 relative z-10">
+              <Zap size={24} className="text-emerald-400" />
+            </div>
+            <h2 className="text-2xl font-black mb-4 italic relative z-10">
+              Infraestructura Celo
+            </h2>
+            <p className="text-emerald-100/60 text-sm leading-relaxed relative z-10">
+              Red móvil-primero y carbono-neutral. Transacciones instantáneas y{" "}
+              <b>Bonos Verdes</b> tokenizados. La base técnica de nuestro{" "}
+              <b>Self-Protocol</b>.
+            </p>
+          </div>
         </div>
-        <h1 className="text-6xl md:text-8xl font-black tracking-tighter mb-6">
-          BIOTA<span className="text-emerald-500">.</span>
-        </h1>
-        <p className="text-xl md:text-2xl text-stone-600 mb-10 max-w-2xl leading-relaxed mx-auto">
-          Transformamos la salud del suelo en <b>Renta Básica Digital</b> para
-          los héroes del campo.
-        </p>
 
-        <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          {/* BOTÓN NEGRO: Productor */}
-          <button
-            onClick={() =>
-              authenticated ? router.push("/dashboard") : login()
-            }
-            className="px-10 py-4 bg-stone-900 text-white rounded-full font-bold text-lg hover:bg-emerald-600 transition-all shadow-xl flex items-center justify-center gap-2"
-          >
-            Soy Productor <MoveRight size={20} />
-          </button>
+        {/* SECCIÓN REFI & NODO ANTIOQUIA - MODO DARK RADIAL */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="md:col-span-2 bg-[#0a0a0a] p-10 rounded-[40px] border border-white/10 flex flex-col md:flex-row gap-8 items-center relative overflow-hidden group">
+            <div className="absolute inset-0 bg-gradient-radial from-blue-500/5 to-transparent opacity-50" />
+            <div className="flex-1 relative z-10">
+              <div className="flex items-center gap-2 text-emerald-400 font-black text-[10px] tracking-widest uppercase mb-4">
+                <Share2 size={14} /> Nodo Antioquia • REFI
+              </div>
+              <h3 className="text-3xl font-black text-white mb-4 italic tracking-tight">
+                Nodo Génesis Envigado.
+              </h3>
+              <p className="text-stone-400 text-sm leading-relaxed">
+                Centro de mando en Envigado. Laboratorio para monitorear la
+                salud del suelo y transformar el impacto ambiental en{" "}
+                <b>Tokens Biota</b> negociables.
+              </p>
+            </div>
+            <div className="w-full md:w-48 h-48 bg-white/5 rounded-3xl border border-white/10 flex items-center justify-center relative z-10 group-hover:bg-white/10 transition-all">
+              <Microscope
+                size={64}
+                className="text-emerald-500 opacity-40 group-hover:opacity-100 transition-opacity"
+              />
+            </div>
+          </div>
 
-          {/* BOTÓN BLANCO: Sponsor (Tienda) */}
-          <button
-            onClick={() =>
-              authenticated ? router.push("/marketplace") : login()
-            }
-            className="px-10 py-4 bg-white border-2 border-stone-200 text-stone-600 rounded-full font-bold text-lg hover:border-emerald-500 transition-all flex items-center justify-center gap-2"
-          >
-            Ser Sponsor <ArrowUpRight size={20} />
-          </button>
+          <div className="bg-emerald-500 p-10 rounded-[40px] text-[#030712] flex flex-col justify-between group cursor-pointer hover:bg-emerald-400 transition-all shadow-[0_0_40px_rgba(16,185,129,0.1)]">
+            <Heart
+              size={32}
+              className="group-hover:scale-125 transition-transform"
+            />
+            <div>
+              <h3 className="text-2xl font-black italic mb-2 uppercase">
+                ReFi Hub
+              </h3>
+              <p className="text-[#030712]/70 text-[10px] font-bold tracking-widest leading-relaxed uppercase">
+                Finanzas que regeneran la vida de Antioquia.
+              </p>
+            </div>
+          </div>
+        </div>
+      </main>
+
+      <main className="max-w-7xl mx-auto px-6 pt-22 pb-20">
+        {/* GRID DE INFORMACIÓN (TUCop & CELO) */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+          {/* TuCOP Wallet */}
+          <div className="bg-[#0a0a0a] p-10 rounded-[40px] border border-white/10 shadow-2xl transition-shadow group relative overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-radial from-emerald-500/10 to-transparent opacity-50" />
+            <div className="w-12 h-12 bg-emerald-500/10 rounded-2xl flex items-center justify-center text-emerald-500 mb-6 group-hover:scale-110 transition-transform relative z-10">
+              <Wallet size={24} />
+            </div>
+            <h2 className="text-2xl font-black text-white mb-4 italic relative z-10">
+              TuCOP Wallet & DeFi
+            </h2>
+            <p className="text-stone-400 text-sm leading-relaxed mb-6 relative z-10">
+              Recibe tu UBI en <b>cCOP</b>. Billetera inteligente para el
+              productor: liquidez real, respaldada y verificada 100% on-chain
+              con protocolos <b>DeFi</b>.
+            </p>
+            <div className="bg-white/5 p-4 rounded-2xl font-mono text-[10px] text-emerald-500 border border-white/5 relative z-10">
+              0xBIOTA...CONNECTED_TO_CELO_SEPOLIA_11142220
+            </div>
+          </div>
+
+          {/* Celo Infrastructure */}
+          <div className="bg-gradient-to-br from-emerald-900 to-[#030712] p-10 rounded-[40px] text-white shadow-xl relative overflow-hidden border border-white/5 group">
+            <Database className="absolute bottom-[-20px] right-[-20px] w-64 h-64 text-emerald-500/5 group-hover:rotate-12 transition-transform duration-700" />
+            <div className="w-12 h-12 bg-white/5 rounded-2xl flex items-center justify-center mb-6 relative z-10">
+              <Zap size={24} className="text-emerald-400" />
+            </div>
+            <h2 className="text-2xl font-black mb-4 italic relative z-10">
+              Infraestructura Celo
+            </h2>
+            <p className="text-emerald-100/60 text-sm leading-relaxed relative z-10">
+              Red móvil-primero y carbono-neutral. Transacciones instantáneas y{" "}
+              <b>Bonos Verdes</b> tokenizados. La base técnica de nuestro{" "}
+              <b>Self-Protocol</b>.
+            </p>
+          </div>
+        </div>
+
+        {/* SECCIÓN REFI & NODO ANTIOQUIA - MODO DARK RADIAL */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="md:col-span-2 bg-[#0a0a0a] p-10 rounded-[40px] border border-white/10 flex flex-col md:flex-row gap-8 items-center relative overflow-hidden group">
+            <div className="absolute inset-0 bg-gradient-radial from-blue-500/5 to-transparent opacity-50" />
+            <div className="flex-1 relative z-10">
+              <div className="flex items-center gap-2 text-emerald-400 font-black text-[10px] tracking-widest uppercase mb-4">
+                <Share2 size={14} /> Nodo Antioquia • REFI
+              </div>
+              <h3 className="text-3xl font-black text-white mb-4 italic tracking-tight">
+                Nodo Génesis Envigado.
+              </h3>
+              <p className="text-stone-400 text-sm leading-relaxed">
+                Centro de mando en Envigado. Laboratorio para monitorear la
+                salud del suelo y transformar el impacto ambiental en{" "}
+                <b>Tokens Biota</b> negociables.
+              </p>
+            </div>
+            <div className="w-full md:w-48 h-48 bg-white/5 rounded-3xl border border-white/10 flex items-center justify-center relative z-10 group-hover:bg-white/10 transition-all">
+              <Microscope
+                size={64}
+                className="text-emerald-500 opacity-40 group-hover:opacity-100 transition-opacity"
+              />
+            </div>
+          </div>
+
+          <div className="bg-emerald-500 p-10 rounded-[40px] text-[#030712] flex flex-col justify-between group cursor-pointer hover:bg-emerald-400 transition-all shadow-[0_0_40px_rgba(16,185,129,0.1)]">
+            <Heart
+              size={32}
+              className="group-hover:scale-125 transition-transform"
+            />
+            <div>
+              <h3 className="text-2xl font-black italic mb-2 uppercase">
+                ReFi Hub
+              </h3>
+              <p className="text-[#030712]/70 text-[10px] font-bold tracking-widest leading-relaxed uppercase">
+                Finanzas que regeneran la vida de Antioquia.
+              </p>
+            </div>
+          </div>
+        </div>
+      </main>
+
+      <section className="max-w-7xl mx-auto px-6 pt-22 pb-20">
+        {/* GRID DE INFORMACIÓN (TUCop & CELO) - MODO DARK RADIAL */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+          {/* TuCOP Wallet */}
+          <div className="bg-[#0a0a0a] p-10 rounded-[40px] border border-white/10 shadow-2xl transition-shadow group relative overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-radial from-emerald-500/10 to-transparent opacity-50" />
+            <div className="w-12 h-12 bg-emerald-500/10 rounded-2xl flex items-center justify-center text-emerald-500 mb-6 group-hover:scale-110 transition-transform relative z-10">
+              <Wallet size={24} />
+            </div>
+            <h2 className="text-2xl font-black text-white mb-4 italic relative z-10">
+              TuCOP Wallet & DeFi
+            </h2>
+            <p className="text-stone-400 text-sm leading-relaxed mb-6 relative z-10">
+              Recibe tu UBI en <b>cCOP</b>. Billetera inteligente para el
+              productor: liquidez real, respaldada y verificada 100% on-chain
+              con protocolos <b>DeFi</b>.
+            </p>
+            <div className="bg-white/5 p-4 rounded-2xl font-mono text-[10px] text-emerald-500 border border-white/5 relative z-10">
+              0xBIOTA...CONNECTED_TO_CELO_SEPOLIA_11142220
+            </div>
+          </div>
+
+          {/* Celo Infrastructure */}
+          <div className="bg-gradient-to-br from-emerald-900 to-[#030712] p-10 rounded-[40px] text-white shadow-xl relative overflow-hidden border border-white/5 group">
+            <Database className="absolute bottom-[-20px] right-[-20px] w-64 h-64 text-emerald-500/5 group-hover:rotate-12 transition-transform duration-700" />
+            <div className="w-12 h-12 bg-white/5 rounded-2xl flex items-center justify-center mb-6 relative z-10">
+              <Zap size={24} className="text-emerald-400" />
+            </div>
+            <h2 className="text-2xl font-black mb-4 italic relative z-10">
+              Infraestructura Celo
+            </h2>
+            <p className="text-emerald-100/60 text-sm leading-relaxed relative z-10">
+              Red móvil-primero y carbono-neutral. Transacciones instantáneas y{" "}
+              <b>Bonos Verdes</b> tokenizados. La base técnica de nuestro{" "}
+              <b>Self-Protocol</b>.
+            </p>
+          </div>
+        </div>
+
+        {/* SECCIÓN REFI & NODO ANTIOQUIA - MODO DARK RADIAL */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="md:col-span-2 bg-[#0a0a0a] p-10 rounded-[40px] border border-white/10 flex flex-col md:flex-row gap-8 items-center relative overflow-hidden group">
+            <div className="absolute inset-0 bg-gradient-radial from-blue-500/5 to-transparent opacity-50" />
+            <div className="flex-1 relative z-10">
+              <div className="flex items-center gap-2 text-emerald-400 font-black text-[10px] tracking-widest uppercase mb-4">
+                <Share2 size={14} /> Nodo Antioquia • REFI
+              </div>
+              <h3 className="text-3xl font-black text-white mb-4 italic tracking-tight">
+                Nodo Génesis Envigado.
+              </h3>
+              <p className="text-stone-400 text-sm leading-relaxed">
+                Centro de mando en Envigado. Laboratorio para monitorear la
+                salud del suelo y transformar el impacto ambiental en{" "}
+                <b>Tokens Biota</b> negociables.
+              </p>
+            </div>
+            <div className="w-full md:w-48 h-48 bg-white/5 rounded-3xl border border-white/10 flex items-center justify-center relative z-10 group-hover:bg-white/10 transition-all">
+              <Microscope
+                size={64}
+                className="text-emerald-500 opacity-40 group-hover:opacity-100 transition-opacity"
+              />
+            </div>
+          </div>
+
+          <div className="bg-emerald-500 p-10 rounded-[40px] text-[#030712] flex flex-col justify-between group cursor-pointer hover:bg-emerald-400 transition-all shadow-[0_0_40px_rgba(16,185,129,0.1)]">
+            <Heart
+              size={32}
+              className="group-hover:scale-125 transition-transform"
+            />
+            <div>
+              <h3 className="text-2xl font-black italic mb-2 uppercase">
+                ReFi Hub
+              </h3>
+              <p className="text-[#030712]/70 text-[10px] font-bold tracking-widest leading-relaxed uppercase">
+                Finanzas que regeneran la vida de Antioquia.
+              </p>
+            </div>
+          </div>
         </div>
       </section>
-
-      {/* --- INFO SECTION --- */}
-      <section className="max-w-6xl mx-auto px-6 py-24 grid md:grid-cols-2 gap-16 items-center border-t border-stone-100">
-        <div className="space-y-6">
-          <div className="inline-flex p-3 bg-emerald-500 text-white rounded-2xl shadow-lg shadow-emerald-200">
-            <Sprout size={32} />
+      <footer className="py-12 border-t border-stone-100 text-center">
+        <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
+          <div className="flex gap-4">
+            <ShieldCheck size={16} className="text-stone-300" />
+            <LayoutGrid size={16} className="text-stone-300" />
           </div>
-          <h2 className="text-4xl font-black">
-            Biota UBI: <br />
-            <span className="text-emerald-600">Monthly Renta Básica</span>
-          </h2>
-          <p className="text-lg text-stone-600 leading-relaxed">
-            Los productores reciben pagos mensuales en <b>cCOP</b> (Celo
-            stablecoin) mientras sanan su suelo. Dinero real, directo a tu
-            celular, sin bancos.
+          <p className="text-stone-400 font-mono text-[9px] uppercase tracking-[0.3em]">
+            &copy; 2026 BIOTA REFI NETWORK | BUILT ON CELO SEPOLIA
           </p>
-          <div className="grid grid-cols-1 gap-4 pt-4">
-            <div className="flex items-center gap-3 font-bold text-stone-700">
-              <Coins className="text-emerald-500" /> Liquidez mensual
-              garantizada
-            </div>
-            <div className="flex items-center gap-3 font-bold text-stone-700">
-              <ShieldCheck className="text-emerald-500" /> Certificación
-              On-Chain
-            </div>
-          </div>
         </div>
-
-        <div className="bg-white p-10 rounded-[3rem] shadow-2xl border border-stone-100 relative overflow-hidden group hover:scale-[1.02] transition-transform duration-500">
-          <div className="absolute top-0 right-0 p-4 bg-emerald-500 text-white font-bold rounded-bl-2xl">
-            LIVE IMPACT
-          </div>
-          <h3 className="text-6xl font-black text-emerald-600 mb-2">+25%</h3>
-          <p className="text-stone-400 uppercase tracking-widest font-bold text-sm">
-            Salud Microbiótica
-          </p>
-          <hr className="my-8 border-stone-100" />
-          <div className="flex gap-6">
-            <div className="flex-1 bg-stone-50 p-6 rounded-3xl text-center">
-              <p className="text-2xl font-bold">40%</p>
-              <p className="text-xs text-stone-400">Agua</p>
-            </div>
-            <div className="flex-1 bg-stone-50 p-6 rounded-3xl text-center">
-              <p className="text-2xl font-bold">Bio+</p>
-              <p className="text-xs text-stone-400">Fauna</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* --- FOOTER --- */}
-      <footer className="pb-12 text-center text-stone-400 text-xs uppercase tracking-[0.3em]">
-        © 2026 Biota Network | Built on Celo Sepolia
       </footer>
     </div>
   );
