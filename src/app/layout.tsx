@@ -10,7 +10,9 @@ export const metadata: Metadata = {
   description: "Pasaporte de Regeneración y UBI en Celo",
   manifest: "/manifest.json",
 };
-
+if (typeof window !== "undefined") {
+  window.global = window;
+}
 export default function RootLayout({
   children,
 }: Readonly<{

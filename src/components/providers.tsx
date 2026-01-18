@@ -5,24 +5,31 @@ import { ThirdwebProvider } from "thirdweb/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 
+// Creamos un cliente para manejo de estado asíncrono (opcional pero recomendado)
 const queryClient = new QueryClient();
 
-// CONFIGURACIÓN MANUAL PARA PRIVY (Soluciona el error de rpcUrls)
-const sepoliaConfig = {
-  id: 11155111,
-  name: "Sepolia",
-  network: "sepolia",
+// CONFIGURACIÓN PARA CELO SEPOLIA
+const celoSepoliaConfig = {
+  id: 11142220,
+  name: "Celo Sepolia",
+  network: "celo-sepolia",
   nativeCurrency: {
     decimals: 18,
-    name: "Sepolia Ether",
-    symbol: "ETH",
+    name: "CELO",
+    symbol: "CELO",
   },
   rpcUrls: {
     default: {
-      http: ["https://rpc.ankr.com/eth_sepolia"],
+      http: ["https://forno.sepolia.celo.org"],
     },
     public: {
-      http: ["https://rpc.ankr.com/eth_sepolia"],
+      http: ["https://forno.sepolia.celo.org"],
+    },
+  },
+  blockExplorers: {
+    default: {
+      name: "CeloScan",
+      url: "https://sepolia.celoscan.io",
     },
   },
   testnet: true,
@@ -30,29 +37,37 @@ const sepoliaConfig = {
 
 export function Providers({ children }: { children: React.ReactNode }) {
   const [mounted, setMounted] = useState(false);
+
   useEffect(() => {
     setMounted(true);
   }, []);
+
   if (!mounted) return null;
 
   return (
     <QueryClientProvider client={queryClient}>
-      <ThirdwebProvider>
-        <PrivyProvider
-          appId={process.env.NEXT_PUBLIC_PRIVY_APP_ID || ""}
-          config={{
-            appearance: { theme: "light", accentColor: "#22c55e" },
-            embeddedWallets: {
-              ethereum: { createOnLogin: "users-without-wallets" },
+      {/* 1. Privy envuelve todo para gestionar la sesión del usuario */}
+      <PrivyProvider
+        appId={process.env.NEXT_PUBLIC_PRIVY_APP_ID || ""}
+        config={{
+          appearance: {
+            theme: "dark",
+            accentColor: "#22c55e",
+            showWalletLoginFirst: true,
+          },
+          // Configuración de wallet embebida corregida para TS
+          embeddedWallets: {
+            ethereum: {
+              createOnLogin: "users-without-wallets",
             },
-            // Usamos la configuración manual que sí tiene rpcUrls
-            defaultChain: sepoliaConfig,
-            supportedChains: [sepoliaConfig],
-          }}
-        >
-          {children}
-        </PrivyProvider>
-      </ThirdwebProvider>
+          },
+          defaultChain: celoSepoliaConfig,
+          supportedChains: [celoSepoliaConfig],
+        }}
+      >
+        {/* 2. Thirdweb va ADENTRO para aprovechar la sesión si es necesario */}
+        <ThirdwebProvider>{children}</ThirdwebProvider>
+      </PrivyProvider>
     </QueryClientProvider>
   );
 }
