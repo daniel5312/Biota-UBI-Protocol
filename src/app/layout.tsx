@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { Providers } from "@/components/providers"; // Importamos el componente que creamos
+import { Providers } from "@/components/providers";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -10,16 +10,14 @@ export const metadata: Metadata = {
   description: "Pasaporte de Regeneración y UBI en Celo",
   manifest: "/manifest.json",
 };
-if (typeof window !== "undefined") {
-  window.global = window;
-}
+
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
-    <html lang="es">
+    <html lang="es" suppressHydrationWarning>
       <head>
         {/* Metadatos esenciales para Farcaster Frames v2 */}
         <meta property="fc:frame" content="vNext" />
@@ -29,8 +27,7 @@ export default function RootLayout({
         />
         <meta property="fc:frame:button:1" content="Entrar" />
       </head>
-      <body className={inter.className}>
-        {/* Envolvemos toda la app con los Providers (Privy + Thirdweb) */}
+      <body className={inter.className} suppressHydrationWarning>
         <Providers>{children}</Providers>
       </body>
     </html>
