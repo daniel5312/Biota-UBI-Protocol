@@ -45,7 +45,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
   return (
     <QueryClientProvider client={queryClient}>
       <PrivyProvider
-        appId={PRIVY_ID || ""}
+        appId={PRIVY_ID as string} //cambiarappId={PRIVY_ID || ""}
         config={{
           appearance: {
             theme: "dark",

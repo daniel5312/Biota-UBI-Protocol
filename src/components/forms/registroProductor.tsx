@@ -125,7 +125,7 @@ export const RegistroProductor = () => {
               <CheckCircle2 size={48} className="text-emerald-500" />
             </div>
             <div>
-              <h4 className="text-2xl font-black italic uppercase italic">
+              <h4 className="text-2xl font-black italic uppercase">
                 Solicitud Enviada
               </h4>
               <p className="text-stone-500 text-sm mt-2 max-w-sm mx-auto">
