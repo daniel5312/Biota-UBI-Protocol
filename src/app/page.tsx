@@ -169,6 +169,137 @@ export default function LandingPage() {
             </div>
           </div>
         </div>
+
+        {/* INFO GRID */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+          <div className="bg-[#0a0a0a] p-10 rounded-[40px] border border-white/10 relative overflow-hidden group">
+            <div className="w-12 h-12 bg-emerald-500/10 rounded-2xl flex items-center justify-center text-emerald-500 mb-6">
+              <Wallet size={24} />
+            </div>
+            <h2 className="text-2xl font-black text-white mb-4 italic">
+              TuCOP Wallet
+            </h2>
+            <p className="text-stone-400 text-sm leading-relaxed mb-6">
+              Recibe pagos en **cUSD/cCOP**. Billetera inteligente: liquidez
+              real verificada 100% on-chain.
+            </p>
+            <div className="bg-white/5 p-4 rounded-2xl font-mono text-[10px] text-emerald-500 border border-white/5">
+              NETWORK: CELO_SEPOLIA_11142220
+            </div>
+          </div>
+
+          <div className="bg-gradient-to-br from-emerald-900 to-[#030712] p-10 rounded-[40px] border border-white/5 relative overflow-hidden group">
+            <Database className="absolute bottom-[-20px] right-[-20px] w-64 h-64 text-emerald-500/5" />
+            <div className="w-12 h-12 bg-white/5 rounded-2xl flex items-center justify-center mb-6">
+              <Zap size={24} className="text-emerald-400" />
+            </div>
+            <h2 className="text-2xl font-black mb-4 italic">
+              Infraestructura Celo
+            </h2>
+            <p className="text-emerald-100/60 text-sm leading-relaxed">
+              Red móvil-primero y carbono-neutral. Transacciones instantáneas
+              para el **Génesis Envigado**.
+            </p>
+          </div>
+        </div>
+
+        {/* REFI SECTION */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="md:col-span-2 bg-[#0a0a0a] p-10 rounded-[40px] border border-white/10 flex flex-col md:flex-row gap-8 items-center relative overflow-hidden">
+            <div className="flex-1">
+              <div className="flex items-center gap-2 text-emerald-400 font-black text-[10px] tracking-widest uppercase mb-4">
+                <Share2 size={14} /> Nodo Antioquia • REFI
+              </div>
+              <h3 className="text-3xl font-black text-white mb-4 italic">
+                Nodo Génesis Envigado
+              </h3>
+              <p className="text-stone-400 text-sm">
+                Monitoreo de salud del suelo y transformación de impacto en
+                **Impact-NFTs**.
+              </p>
+            </div>
+            <div className="w-full md:w-48 h-48 bg-white/5 rounded-3xl border border-white/10 flex items-center justify-center">
+              <Microscope size={64} className="text-emerald-500 opacity-40" />
+            </div>
+          </div>
+
+          <div className="bg-emerald-500 p-10 rounded-[40px] text-[#030712] flex flex-col justify-between group hover:bg-emerald-400 transition-all">
+            <Heart size={32} />
+            <div>
+              <h3 className="text-2xl font-black italic mb-2 uppercase">
+                ReFi Hub
+              </h3>
+              <p className="text-[#030712]/70 text-[10px] font-bold tracking-widest uppercase">
+                Finanzas que regeneran la vida.
+              </p>
+            </div>
+          </div>
+        </div>
+        {/* INFO GRID */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+          <div className="bg-[#0a0a0a] p-10 rounded-[40px] border border-white/10 relative overflow-hidden group">
+            <div className="w-12 h-12 bg-emerald-500/10 rounded-2xl flex items-center justify-center text-emerald-500 mb-6">
+              <Wallet size={24} />
+            </div>
+            <h2 className="text-2xl font-black text-white mb-4 italic">
+              TuCOP Wallet
+            </h2>
+            <p className="text-stone-400 text-sm leading-relaxed mb-6">
+              Recibe pagos en **cUSD/cCOP**. Billetera inteligente: liquidez
+              real verificada 100% on-chain.
+            </p>
+            <div className="bg-white/5 p-4 rounded-2xl font-mono text-[10px] text-emerald-500 border border-white/5">
+              NETWORK: CELO_SEPOLIA_11142220
+            </div>
+          </div>
+
+          <div className="bg-gradient-to-br from-emerald-900 to-[#030712] p-10 rounded-[40px] border border-white/5 relative overflow-hidden group">
+            <Database className="absolute bottom-[-20px] right-[-20px] w-64 h-64 text-emerald-500/5" />
+            <div className="w-12 h-12 bg-white/5 rounded-2xl flex items-center justify-center mb-6">
+              <Zap size={24} className="text-emerald-400" />
+            </div>
+            <h2 className="text-2xl font-black mb-4 italic">
+              Infraestructura Celo
+            </h2>
+            <p className="text-emerald-100/60 text-sm leading-relaxed">
+              Red móvil-primero y carbono-neutral. Transacciones instantáneas
+              para el **Génesis Envigado**.
+            </p>
+          </div>
+        </div>
+
+        {/* REFI SECTION */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="md:col-span-2 bg-[#0a0a0a] p-10 rounded-[40px] border border-white/10 flex flex-col md:flex-row gap-8 items-center relative overflow-hidden">
+            <div className="flex-1">
+              <div className="flex items-center gap-2 text-emerald-400 font-black text-[10px] tracking-widest uppercase mb-4">
+                <Share2 size={14} /> Nodo Antioquia • REFI
+              </div>
+              <h3 className="text-3xl font-black text-white mb-4 italic">
+                Nodo Génesis Envigado
+              </h3>
+              <p className="text-stone-400 text-sm">
+                Monitoreo de salud del suelo y transformación de impacto en
+                **Impact-NFTs**.
+              </p>
+            </div>
+            <div className="w-full md:w-48 h-48 bg-white/5 rounded-3xl border border-white/10 flex items-center justify-center">
+              <Microscope size={64} className="text-emerald-500 opacity-40" />
+            </div>
+          </div>
+
+          <div className="bg-emerald-500 p-10 rounded-[40px] text-[#030712] flex flex-col justify-between group hover:bg-emerald-400 transition-all">
+            <Heart size={32} />
+            <div>
+              <h3 className="text-2xl font-black italic mb-2 uppercase">
+                ReFi Hub
+              </h3>
+              <p className="text-[#030712]/70 text-[10px] font-bold tracking-widest uppercase">
+                Finanzas que regeneran la vida.
+              </p>
+            </div>
+          </div>
+        </div>
       </main>
 
       <footer className="py-12 border-t border-white/5 text-center">

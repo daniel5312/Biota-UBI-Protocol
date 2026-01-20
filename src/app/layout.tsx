@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { Providers } from "@/components/providers";
+import { Suspense } from "react"; // <--- 1. IMPORTANTE: Importamos Suspense
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -28,7 +29,16 @@ export default function RootLayout({
         <meta property="fc:frame:button:1" content="Entrar" />
       </head>
       <body className={inter.className} suppressHydrationWarning>
-        <Providers>{children}</Providers>
+        {/* 2. SOLUCIÓN FINAL: Envolvemos todo en Suspense para evitar el error de cliente */}
+        <Suspense
+          fallback={
+            <div className="flex h-screen w-full items-center justify-center bg-black text-emerald-500 font-mono animate-pulse">
+              Iniciando Biota Protocol...
+            </div>
+          }
+        >
+          <Providers>{children}</Providers>
+        </Suspense>
       </body>
     </html>
   );
