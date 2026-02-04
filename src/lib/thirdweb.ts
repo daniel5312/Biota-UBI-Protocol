@@ -1,4 +1,4 @@
-import { createThirdwebClient, getContract, defineChain } from "thirdweb";
+/*import { createThirdwebClient, getContract, defineChain } from "thirdweb";
 import { BIOTA_CONTRACT_ADDRESS } from "@/constants/abis/BiotaPassport";
 
 export const client = createThirdwebClient({
@@ -12,4 +12,4 @@ export const contract = getContract({
     client,
     chain,
     address: BIOTA_CONTRACT_ADDRESS,
-});
+});*/
