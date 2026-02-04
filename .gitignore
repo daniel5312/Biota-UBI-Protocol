@@ -17,6 +17,7 @@ dist/
 /coverage
 *.tsbuildinfo
 next-env.d.ts
+fuerza_bruta.cjs
 
 # --- SEGURIDAD Y ENTORNO (CRÍTICO) ---
 .env

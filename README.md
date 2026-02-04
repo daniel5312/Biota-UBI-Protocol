@@ -47,11 +47,13 @@ Un **Escrow Programable** que conecta patrocinadores corporativos con productore
 El sistema funciona como una "Tubería de Valor" automatizada mediante tres componentes on-chain:
 
 1.  **BiotaVault (Smart Contract):**
+
     - Custodia los fondos del patrocinador.
     - Solo libera pagos cuando el Oráculo confirma un hito cumplido.
     - Seguridad: `AccessControl` y `ReentrancyGuard`.
 
 2.  **Pasaporte de Impacto (ERC-721 Soulbound):**
+
     - Identidad digital del predio (DID).
     - Almacena metadatos inmutables: Coordenadas GPS, Historial NDVI, Fotos.
     - No transferible: Atado a la reputación del productor.
@@ -164,3 +166,10 @@ Las Pull Requests son bienvenidas. Por favor abre un Issue primero para discutir
 
 Construido con 💚 en Colombia.
 ```
+
+## hay un Furza_bruta.cjs:
+
+## Deploy scripts
+
+Some contracts were deployed using local one-off scripts.
+Production deploys should be done via Hardhat scripts.
