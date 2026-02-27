@@ -3,7 +3,7 @@
 import { PrivyProvider } from "@privy-io/react-auth";
 import { ThirdwebProvider } from "thirdweb/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState, useMemo, useRef } from "react";
 
 // CONFIGURACIÓN PARA CELO SEPOLIA (Red ID 11142220)
 const celoSepoliaConfig = {
@@ -28,13 +28,43 @@ const celoSepoliaConfig = {
   testnet: true,
 };
 
+// Check if we're in a cross-origin iframe where window.ethereum access would throw
+function isInCrossOriginIframe(): boolean {
+  try {
+    if (typeof window === "undefined") return false;
+    // If window.top is inaccessible, we're in a cross-origin iframe
+    const _ = window.top?.location.href;
+    return false;
+  } catch {
+    return true;
+  }
+}
+
 export function Providers({ children }: { children: React.ReactNode }) {
   const [mounted, setMounted] = useState(false);
+  const patchedRef = useRef(false);
 
   // Mantenemos el QueryClient persistente
   const queryClient = useMemo(() => new QueryClient(), []);
 
   useEffect(() => {
+    // Patch window.ethereum access to prevent cross-origin SecurityError in iframes
+    if (!patchedRef.current && isInCrossOriginIframe()) {
+      patchedRef.current = true;
+      try {
+        // If ethereum is not directly on this window, define a safe fallback
+        if (!Object.getOwnPropertyDescriptor(window, "ethereum")) {
+          Object.defineProperty(window, "ethereum", {
+            get() {
+              return undefined;
+            },
+            configurable: true,
+          });
+        }
+      } catch {
+        // Silently ignore - the property may already exist or be non-configurable
+      }
+    }
     setMounted(true);
   }, []);
 
@@ -52,12 +82,17 @@ export function Providers({ children }: { children: React.ReactNode }) {
             accentColor: "#22c55e", // El verde de Biota
             showWalletLoginFirst: true,
           },
-          // AQUÍ ESTÁ LO QUE PREGUNTABAS:
           embeddedWallets: {
             ethereum: {
               createOnLogin: "users-without-wallets",
             },
           },
+          // Disable external wallet detection in cross-origin iframes to prevent SecurityError
+          ...(isInCrossOriginIframe() && {
+            externalWallets: {
+              coinbaseWallet: { connectionOptions: "all" },
+            },
+          }),
           defaultChain: celoSepoliaConfig,
           supportedChains: [celoSepoliaConfig],
         }}

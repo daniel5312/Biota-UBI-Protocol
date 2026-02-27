@@ -15,15 +15,16 @@ export function middleware(request: NextRequest) {
     }
 
     // Cabeceras de seguridad para producción
-    response.headers.set('X-Frame-Options', 'SAMEORIGIN');
+    // Allow iframe embedding for preview environments (Vercel, v0, etc.)
+    // X-Frame-Options is intentionally omitted to support iframe-based previews
     response.headers.set('X-Content-Type-Options', 'nosniff');
     response.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
 
     // IMPORTANTE PARA PRIVY: 
-    // Permitir que los iframes de autenticación no sean bloqueados
+    // Permitir iframes de autenticación y entornos de preview
     response.headers.set(
         'Content-Security-Policy',
-        "frame-ancestors 'self' https://auth.privy.io;"
+        "frame-ancestors 'self' https://auth.privy.io https://*.vusercontent.net https://*.vercel.app;"
     );
 
     return response;
