@@ -22,11 +22,12 @@ export default function LandingPage() {
   const { address, isConnected } = useAccount();
   const { disconnect } = useDisconnect();
 
+  // Evitar hidratación incorrecta en React 19
   useEffect(() => {
     setMounted(true);
   }, []);
 
-  // ✅ Auto-Redirección: Si ya estás conectado, te manda directo al Dashboard
+  // ✅ Auto-Redirección inteligente
   useEffect(() => {
     if (isConnected && mounted) {
       router.push("/dashboard");
@@ -39,13 +40,11 @@ export default function LandingPage() {
     }
   }, []);
 
-  // ✅ ARREGLO FINAL:
-  // Ya no intentamos loguear aquí. Solo mandamos al usuario al Dashboard.
-  // El Dashboard se encargará de mostrar los botones de login si hacen falta.
   const handleCTA = (path: string = "/dashboard") => {
     router.push(path);
   };
 
+  // Pantalla de carga negra para evitar parpadeos blancos
   if (!mounted) return <div className="min-h-screen bg-[#030712]" />;
 
   return (
@@ -79,7 +78,6 @@ export default function LandingPage() {
               {isConnected ? `Portal: ${address?.slice(0, 6)}...` : "Entrar"}
             </button>
 
-            {/* Botón extra para cerrar sesión si está conectado */}
             {isConnected && (
               <button
                 onClick={() => disconnect()}

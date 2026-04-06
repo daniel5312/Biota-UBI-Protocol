@@ -2,7 +2,7 @@ import { http, createConfig, cookieStorage, createStorage } from 'wagmi';
 import { celoSepolia } from 'wagmi/chains';
 import { injected, walletConnect } from 'wagmi/connectors';
 
-const projectId = '43a853c3778c34d0e1a91d23107feafd';
+const projectId = '14a2dd0ed7b26291d999ac751ebbb539';
 
 export const config = createConfig({
     chains: [celoSepolia],

@@ -9,7 +9,10 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@coinbase/wallet-sdk": "^4.3.7",
+    "@gemini-wallet/core": "^0.3.2",
     "@human.tech/waap-sdk": "^1.0.3",
+    "@metamask/sdk": "^0.33.1",
     "@openzeppelin/contracts": "^5.4.0",
     "@tanstack/react-query": "5.64.1",
     "lucide-react": "^0.563.0",

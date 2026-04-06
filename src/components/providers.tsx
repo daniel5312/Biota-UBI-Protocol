@@ -1,12 +1,12 @@
 "use client";
 
-import { useState, type ReactNode } from "react";
+import { useState, useEffect, type ReactNode } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { WagmiProvider, type State } from "wagmi"; // Importar type State
+import { WagmiProvider, type State } from "wagmi";
+// 👇 IMPORTANTE: Traemos el ID desde la configuración central
 import { config, WC_PROJECT_ID } from "@/config/waap.config";
 import { initWaaP } from "@human.tech/waap-sdk";
 
-// Recibimos 'initialState' si usamos cookies (opcional pero recomendado)
 export function Providers({
   children,
   initialState,
@@ -14,24 +14,46 @@ export function Providers({
   children: ReactNode;
   initialState?: State;
 }) {
-  const [queryClient] = useState(() => new QueryClient());
-
-  // Inicialización de Human (Solo en cliente)
-  if (typeof window !== "undefined" && !window.waap) {
-    try {
-      initWaaP({
-        config: {
-          authenticationMethods: ["email", "social", "wallet"],
-          allowedSocials: ["google"],
-          styles: { darkMode: true },
+  const [queryClient] = useState(
+    () =>
+      new QueryClient({
+        defaultOptions: {
+          queries: {
+            staleTime: 60 * 1000,
+          },
         },
-        useStaging: true,
-        walletConnectProjectId: WC_PROJECT_ID,
-      });
-    } catch (e) {
-      console.warn(e);
+      }),
+  );
+
+  // 👮‍♂️ AQUÍ ESTÁ EL PORTERO (WaaP)
+  useEffect(() => {
+    // Solo inicia si estamos en el navegador y no se ha iniciado antes
+    if (typeof window !== "undefined" && !window.waap) {
+      try {
+        console.log("👮‍♂️ Portero WaaP: Iniciando turno...");
+        console.log("🔑 Usando ID:", WC_PROJECT_ID); // <--- DEBE IMPRIMIR TU ID REAL
+
+        initWaaP({
+          config: {
+            authenticationMethods: ["email", "phone", "wallet"],
+            allowedSocials: ["google", "twitter", "github", "discord"],
+            styles: {
+              darkMode: true,
+              // Opcional: Ajustar colores para que combine con Biota
+              // Emerald-500
+            },
+          },
+          useStaging: false, // ⚠️ IMPORTANTE: Pon false para producción real
+          // 👇 ESTA ES LA CLAVE MAESTRA:
+          walletConnectProjectId: WC_PROJECT_ID,
+        });
+
+        console.log("✅ Portero WaaP: Listo y escuchando.");
+      } catch (e) {
+        console.error("❌ El Portero se durmió (Error Init):", e);
+      }
     }
-  }
+  }, []);
 
   return (
     <WagmiProvider config={config} initialState={initialState}>
