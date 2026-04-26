@@ -27,6 +27,7 @@ export const RegistroProductor = () => {
     try {
       // 1. Obtener el Ethers Provider inyectado por Privy
       const ethereumProvider = await wallet.getEthereumProvider();
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const provider = new ethers.providers.Web3Provider(ethereumProvider as any);
       const signer = provider.getSigner();
       

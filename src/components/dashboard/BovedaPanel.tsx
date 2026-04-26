@@ -20,6 +20,7 @@ export const BovedaPanel = () => {
       if (!wallet) return;
       try {
         const ethereumProvider = await wallet.getEthereumProvider();
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const provider = new ethers.providers.Web3Provider(ethereumProvider as any);
         
         // Conectar a BiotaPassport
