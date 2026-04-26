@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import { useWallets } from "@privy-io/react-auth";
+import { ethers } from "ethers";
 import {
   MapPin,
   User,
@@ -13,6 +15,37 @@ import {
 
 export const RegistroProductor = () => {
   const [step, setStep] = useState(1);
+  const { wallets } = useWallets();
+  const wallet = wallets[0]; // TuCOP wallet conectada via Privy
+
+  const handleFinalizar = async () => {
+    if (!wallet) {
+      alert("Por favor conecta tu wallet primero.");
+      return;
+    }
+
+    try {
+      // 1. Obtener el Ethers Provider inyectado por Privy
+      const ethereumProvider = await wallet.getEthereumProvider();
+      const provider = new ethers.providers.Web3Provider(ethereumProvider as any);
+      const signer = provider.getSigner();
+      
+      // 2. Crear un mensaje seguro vinculando la identidad
+      const message = `Solicito a Biota Protocol iniciar mi proceso de transición regenerativa en Celo.\nWallet: ${wallet.address}\nFecha: ${new Date().toISOString()}`;
+      
+      // 3. Firmar el mensaje off-chain (No gasta gas)
+      console.log("Solicitando firma al productor...");
+      const signature = await signer.signMessage(message);
+      
+      console.log("Firma generada exitosamente:", signature);
+      // Aquí el Backend (Ej. Supabase) guardaría los datos + firma para que el Admin luego mintee el pasaporte
+      
+      setStep(3);
+    } catch (error) {
+      console.error("Error al firmar:", error);
+      alert("Hubo un error al generar tu Identidad Biota. ¿Rechazaste la transacción?");
+    }
+  };
 
   return (
     <section
@@ -110,10 +143,10 @@ export const RegistroProductor = () => {
                 Atrás
               </button>
               <button
-                onClick={() => setStep(3)}
+                onClick={handleFinalizar}
                 className="w-2/3 bg-white text-black py-4 rounded-2xl font-black uppercase text-sm"
               >
-                Finalizar Diagnóstico
+                Firmar y Finalizar Diagnóstico
               </button>
             </div>
           </div>
@@ -126,19 +159,18 @@ export const RegistroProductor = () => {
             </div>
             <div>
               <h4 className="text-2xl font-black italic uppercase">
-                Solicitud Enviada
+                Firma Exitosa
               </h4>
               <p className="text-stone-500 text-sm mt-2 max-w-sm mx-auto">
-                Estamos procesando tu Identidad Biota. Un técnico te contactará
-                para el diagnóstico inicial.
+                Tu identidad está asegurada. El equipo técnico de Biota hará la verificación física de tu predio para mintear tu Pasaporte en la Blockchain.
               </p>
             </div>
             <div className="p-6 bg-emerald-500/5 border border-emerald-500/20 rounded-3xl">
               <p className="text-[10px] font-black uppercase text-emerald-500 tracking-widest">
-                Estado de Identidad:
+                Estado del Pasaporte:
               </p>
               <p className="font-mono text-xs mt-1 text-emerald-200/50">
-                SELF_ID_PENDING_VERIFICATION...
+                ESPERANDO_AUDITORIA_ORACULO...
               </p>
             </div>
           </div>

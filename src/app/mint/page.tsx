@@ -5,7 +5,7 @@ import { useWallets } from "@privy-io/react-auth"; // Usamos Privy directamente
 import { prepareContractCall, encode } from "thirdweb"; // Importamos encode
 import { contract } from "@/lib/thirdweb";
 import { useRouter } from "next/navigation";
-import { BIOTA_CONTRACT_ADDRESS } from "@/constants/abis/BiotaPassport";
+import { BIOTA_PASSPORT_ADDRESS } from "@/constants/contracts";
 
 export default function MintPage() {
   const { wallets } = useWallets(); // Obtenemos la wallet de Privy
@@ -56,7 +56,7 @@ export default function MintPage() {
         params: [
           {
             from: wallet.address as `0x${string}`, // <--- Corrección de tipo aquí
-            to: BIOTA_CONTRACT_ADDRESS as `0x${string}`,
+            to: BIOTA_PASSPORT_ADDRESS as `0x${string}`,
             data: data as `0x${string}`,
           },
         ],

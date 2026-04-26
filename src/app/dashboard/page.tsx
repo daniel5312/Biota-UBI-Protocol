@@ -1,6 +1,8 @@
 "use client";
 
 import { usePrivy } from "@privy-io/react-auth";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 import {
   Sprout,
   Database,
@@ -14,11 +16,19 @@ import {
 } from "lucide-react";
 import { Navbar } from "@/components/navbar";
 import { RegistroProductor } from "@/components/forms/registroProductor";
+import { BovedaPanel } from "@/components/dashboard/BovedaPanel";
 
 export default function ProducerDashboard() {
-  const { ready } = usePrivy();
+  const { ready, authenticated } = usePrivy();
+  const router = useRouter();
 
-  if (!ready) return <div className="min-h-screen bg-[#050505]" />;
+  useEffect(() => {
+    if (ready && !authenticated) {
+      router.push("/");
+    }
+  }, [ready, authenticated, router]);
+
+  if (!ready || !authenticated) return <div className="min-h-screen bg-[#050505]" />;
 
   return (
     <div className="min-h-screen bg-[#050505] text-white selection:bg-emerald-500/30 antialiased">
@@ -29,9 +39,10 @@ export default function ProducerDashboard() {
           <h1 className="text-5xl font-black italic uppercase tracking-tighter">
             Portal del Productor
           </h1>
-          <p className="text-emerald-500 font-bold text-xs uppercase tracking-[0.3em] mt-2">
+          <p className="text-emerald-500 font-bold text-xs uppercase tracking-[0.3em] mt-2 mb-10">
             Protocolo ReFi • Nodo Génesis Envigado
           </p>
+          <BovedaPanel />
         </header>
 
         <section className="grid md:grid-cols-2 gap-12 bg-white/5 p-10 rounded-[40px] border border-white/10 relative overflow-hidden">
